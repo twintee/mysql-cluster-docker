@@ -1,0 +1,9 @@
+[mysqld]
+server-id=___MASTER_SERVER_ID___
+#replicate-do-db=
+
+# if slave to be master
+log-slave-updates=ON
+
+sync_binlog=1
+

@@ -1,0 +1,3 @@
+[client]
+user = rep
+password = ___MYSQL_REP_PASSWORD___

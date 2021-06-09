@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+  db-master:
+    build: mysql
+    image: app-mysql
+    container_name: node-mysql-master
+    env_file: .env
+    ports:
+      - "${MASTER_PORT}:3306"
+    volumes:
+      - ./vol/master/data:/var/lib/mysql # mysql bin for pub
+      - ./vol/master/log:/var/log/mysql
+      - ./vol/master/dump:/tmp/dump:rw
+      - ./mnt/common:/tmp/common
+      - ./mnt/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mnt/conf/master/rep.cnf:/etc/mysql/conf.d/rep.cnf
+      - ./mnt/sh_init/master:/docker-entrypoint-initdb.d # shell and dumps for init mysql
+      - ./mnt/scr/master:/tmp/scr:rw # replication scripts
+    deploy:
+      resources:
+        limits:
+          # cpus: '0.001'
+          memory: ${MEM}
+    restart: always
+    security_opt: #Measures mbind: Operation not permitted
+      - seccomp:unconfined
+
+  db-slave:
+    build: mysql
+    image: app-mysql
+    container_name: node-mysql-slave
+    env_file: .env
+    ports:
+      - "${SLAVE_PORT}:3306"
+    volumes:
+      - ./vol/slave/data:/var/lib/mysql # mysql bin for pub
+      - ./vol/slave/log:/var/log/mysql
+      - ./vol/slave/dump:/tmp/dump:rw
+      - ./mnt/common:/tmp/common
+      - ./mnt/conf/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./mnt/conf/slave/rep.cnf:/etc/mysql/conf.d/rep.cnf
+      - ./mnt/sh_init/slave:/docker-entrypoint-initdb.d # shell and dumps for init mysql
+      - ./mnt/scr/slave:/tmp/scr:rw # replication scripts
+    deploy:
+      resources:
+        limits:
+          # cpus: '0.001'
+          memory: ${MEM}
+    restart: always
+    security_opt: #Measures mbind: Operation not permitted
+      - seccomp:unconfined

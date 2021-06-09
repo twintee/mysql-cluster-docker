@@ -1,0 +1,15 @@
+[mysqld]
+server-id=___SLAVE_SERVER_ID___
+#replicate-do-db=
+
+# if slave to be master
+log-slave-updates=ON
+
+read_only=1
+#super_read_only=1
+
+# skip start replicate at start mysql daemon
+skip-slave-start
+
+relay_log_info_repository=TABLE
+relay_log_recovery=ON
