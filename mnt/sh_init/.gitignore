@@ -1,1 +1,5 @@
 ~*
+*.sql
+
+!010_init_databases.sql
+!999_finish.sql

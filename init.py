@@ -7,6 +7,7 @@ import sys
 from os.path import join, dirname, abspath, isfile, isdir
 import argparse
 import helper as fn
+from time import sleep
 
 dir_scr = abspath(dirname(__file__))
 os.chdir(dir_scr)
@@ -39,6 +40,16 @@ def main(_args):
     # サービス作成
     for line in fn.cmdlines(_cmd=f"docker-compose up -d {target}", _encode="utf8"):
         sys.stdout.write(line)
+
+    if target != "db-slave":
+
+        initialized = False
+        while initialized:
+            fn.info(f"waiting 1sec for init {node} node...")
+            sleep(1)
+            for line in fn.cmdlines(_cmd=f"docker-compose logs db-master", _encode="utf8"):
+                if "999_finish.sql" in line:
+                    initialized = True
 
     # パーミッション調整
     nodes = ["node-mysql-master", "node-mysql-slave"]
