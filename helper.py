@@ -21,7 +21,10 @@ def input_y(_txt, _abort=False):
         if not _input in ["y", "yes"]:
             sys.exit()
 
-def input_yn(_txt):
+def input_yn(_txt, _yes=False):
+    if _yes:
+        print(f"{_txt}y")
+        return _yes
     _input = input(_txt).lower()
     if _input in ["y", "yes"]:
         return True

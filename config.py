@@ -30,11 +30,11 @@ def main(_args):
         'MYSQL_USER_PASSWORD',
         'MEM',
     ]
-    if _args.node == 'master':
+    if _args.node in ['master', 'all']:
         req_keys.append('MASTER_PORT')
         req_keys.append('MASTER_SERVER_ID')
         params['MASTER_HOST'] = fn.local_ip()
-    elif _args.node == 'slave':
+    if _args.node in ['slave', 'all']:
         req_keys.append('SLAVE_PORT')
         req_keys.append('SLAVE_SERVER_ID')
         req_keys.append('MASTER_HOST')
@@ -72,10 +72,10 @@ def main(_args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='set env params')
-    parser.add_argument('node', help="node type 'master' or 'slave'", required=True)
+    parser.add_argument('node', help="node type 'master' or 'slave'")
     args = parser.parse_args()
 
-    if not args.node in ["master", "slave"]:
+    if not args.node in ["master", "slave", "all"]:
         print("[info] args error.")
 
     main(args)

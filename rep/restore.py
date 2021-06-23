@@ -84,16 +84,15 @@ def main(_args):
         for line in rp.cmdrun(_cmd=cmds):
             sys.stdout.write(line)
 
-        path_status = join(dir_dump_ref, "status.txt")
         status_cmd = ""
-        with open(path_status) as f:
+        with open(join(dir_dump_ref, "status.txt")) as f:
             status_cmd = f.read()
         spl_status = status_cmd.split(" ")
         for st in spl_status:
             if "MASTER_LOG_FILE" in st:
-                envs['REP_FILE'] = st.replace(",", "")
+                envs['REP_FILE'] = st.replace(",", "").replace("MASTER_LOG_FILE", "SOURCE_LOG_FILE")
             if "MASTER_LOG_POS" in st:
-                envs['REP_POS'] = st.replace(",", "")
+                envs['REP_POS'] = st.replace(",", "").replace("MASTER_LOG_POS", "SOURCE_LOG_POS")
         fn.setenv(envs, env_dst)
         print(f"\n---------- restore to {container} end")
 
@@ -103,13 +102,13 @@ def main(_args):
         if fn.input_yn(f"\nattach to master[ {master_host} ]. ok? (y/*) :"):
             print(f"\n---------- attach to [ {master_host} ] start")
             cmd = f"{mysql_cmd} -e \"\
-CHANGE MASTER TO \
+CHANGE REPLICATION SOURCE TO \
 {envs['REP_FILE']}, \
 {envs['REP_POS']}, \
-MASTER_HOST='{envs['MASTER_HOST']}', \
-MASTER_PORT={envs['MASTER_PORT']}, \
-MASTER_USER='rep', \
-MASTER_PASSWORD='{envs['MYSQL_REP_PASSWORD']}';\
+SOURCE_HOST='{envs['MASTER_HOST']}', \
+SOURCE_PORT={envs['MASTER_PORT']}, \
+SOURCE_USER='rep', \
+SOURCE_PASSWORD='{envs['MYSQL_REP_PASSWORD']}';\
 \""
             for line in rp.cmdrun(_cmd=[cmd], _encode="utf8"):
                 sys.stdout.write(line)

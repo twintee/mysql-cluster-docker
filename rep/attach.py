@@ -8,7 +8,7 @@ from os.path import join, dirname, abspath, isfile, isdir, splitext, basename
 import argparse
 
 dir_scr = abspath(dirname(__file__))
-dir_base = join(dir_scr, "..", "..", "..")
+dir_base = join(dir_scr, "..")
 sys.path.append(dir_base)
 import helper as fn
 from rep import replicator as rp
@@ -41,13 +41,13 @@ def main(_args):
         if fn.input_yn(f"\nattach to master[ {master_host} ]. ok? (y/*) :"):
             print(f"\n---------- attach to [ {master_host} ] start")
             cmd = f"{mysql_cmd} -e \"\
-CHANGE MASTER TO \
+CHANGE REPLICATION SOURCE TO \
 {envs['REP_FILE']}, \
 {envs['REP_POS']}, \
-MASTER_HOST='{envs['MASTER_HOST']}', \
-MASTER_PORT={envs['MASTER_PORT']}, \
-MASTER_USER='rep', \
-MASTER_PASSWORD='{envs['MYSQL_REP_PASSWORD']}';\
+SOURCE_HOST='{envs['MASTER_HOST']}', \
+SOURCE_PORT={envs['MASTER_PORT']}, \
+SOURCE_USER='rep', \
+SOURCE_PASSWORD='{envs['MYSQL_REP_PASSWORD']}';\
 \""
             for line in rp.cmdrun(_cmd=[cmd], _encode="utf8"):
                 sys.stdout.write(line)
@@ -57,6 +57,13 @@ MASTER_PASSWORD='{envs['MYSQL_REP_PASSWORD']}';\
             ]
             for line in rp.cmdrun(_cmd=cmds, _encode="utf8"):
                 sys.stdout.write(line)
+
+            cmds = [
+                f"{dk_cmd} bash -c \"mysql {envs['OPTROOT']} -e 'SHOW SLAVE STATUS\\G;'\"",
+            ]
+            for line in rp.cmdrun(_cmd=cmds, _encode="utf8"):
+                sys.stdout.write(line)
+
     else:
         print(f"[error] node type error.")
         sys.exit()

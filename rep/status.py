@@ -36,16 +36,13 @@ def main(_args):
 
     master_host = f"{envs['MASTER_HOST']} : {envs['MASTER_PORT']}"
 
-    if node == "slave":
-        # デタッチ処理
-        if fn.input_yn(f"\ndetach from master[ {master_host} ]. ok? (y/*) :"):
-            print(f"\n---------- detach from [ {master_host} ] start")
-            cmds = [
-                f"{mysql_cmd} -e 'STOP SLAVE'",
-                f"{mysql_cmd} -e 'RESET SLAVE'",
-            ]
-            for line in rp.cmdrun(_cmd=cmds, _encode="utf8"):
-                sys.stdout.write(line)
+    if node == "slave" or node == "master":
+        # replication status 確認
+        cmds = [
+            f"{mysql_cmd} -e 'SHOW {node} STATUS \\G'",
+        ]
+        for line in rp.cmdrun(_cmd=cmds, _encode="utf8"):
+            sys.stdout.write(line)
     else:
         print(f"[error] node type error.")
         sys.exit()

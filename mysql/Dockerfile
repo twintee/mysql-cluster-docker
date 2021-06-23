@@ -12,8 +12,4 @@ RUN apt-get update && \
     git \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# pip3 モジュールインストール
-RUN pip3 --no-cache-dir install \
-    python-dotenv
-
 EXPOSE 3306

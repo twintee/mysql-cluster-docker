@@ -26,6 +26,8 @@ services:
     restart: always
     security_opt: #Measures mbind: Operation not permitted
       - seccomp:unconfined
+    # networks:
+    #   - reactnet
 
   db-slave:
     build: mysql
@@ -51,3 +53,10 @@ services:
     restart: always
     security_opt: #Measures mbind: Operation not permitted
       - seccomp:unconfined
+    # networks:
+    #   - reactnet
+
+# networks:
+#   reactnet:
+#     driver: bridge
+#     external: true
