@@ -14,7 +14,7 @@ os.chdir(dir_scr)
 
 file_env = join(dir_scr, ".env")
 
-def main(_args):
+def main():
     """
     initialize container
     """
@@ -39,16 +39,17 @@ def main(_args):
     for line in fn.cmdlines(_cmd=f"docker-compose up -d {target}", _encode="utf8"):
         sys.stdout.write(line)
 
+    # サービス起動は若干時間がかかる
+    check_node = "db-master"
+    if node == "slave":
+        check_node = "db-slave"
+    fn.info(f"check boot status. [docker-compose logs {check_node}]")
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='set env params')
-    parser.add_argument('node', help="set generate node type. 'master' or 'slave' or 'all'")
     parser.add_argument('--yes', '-y', help="(option) response 'y' to all input.", action='store_true')
     args = parser.parse_args()
-
-    if not args.node is None:
-        if not args.node in ["master", "slave", "all"]:
-            fn.info("[info] args error.")
 
     if not isfile(file_env):
         fn.error(f"""not exist .env file.\nexecute script. [ python3 config.py ]""")
@@ -58,5 +59,5 @@ if __name__ == "__main__":
         sys.exit()
 
     fn.info("initialize start.")
-    main(args)
+    main()
     fn.info("initialize end.")
