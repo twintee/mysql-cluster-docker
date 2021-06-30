@@ -57,13 +57,13 @@
 
 ## 💨 お手軽１ホストクラスタ構築
 - ノード作成
-    `python3 config.py master`  
+    `python3 config.py all`  
     すべてenterで完了  
-    `sudo python3 init.py -n all`  
+    `sudo python3 init.py`  
     すべてyで完了  
     `sudo python3 rep/dump.py -n master`  
     すべてyで完了  
-    `sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump` 
+    `sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump`  
     `python3 rep/restore.py -n slave`  
     上記でコピーしたdumpを指定  
     masterにattachするか聞かれたらy
