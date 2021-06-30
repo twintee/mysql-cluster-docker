@@ -63,7 +63,9 @@
     すべてyで完了  
     `sudo python3 rep/dump.py -n master`  
     すべてyで完了  
-    `sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump`  
-    `python3 rep/restore.py -n slave`  
+    ```
+    sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump  
+    python3 rep/restore.py -n slave
+    ```  
     上記でコピーしたdumpを指定  
     masterにattachするか聞かれたらy
