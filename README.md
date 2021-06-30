@@ -58,16 +58,16 @@
 ## 💨 お手軽１ホストクラスタ構築
 
 - ノード作成
-    * masterとslaveノードの設定
+    * masterとslaveノードの設定  
       `python3 config.py all`
-    * masterノードとslaveノードのコンテナ作成
+    * masterノードとslaveノードのコンテナ作成  
       `sudo python3 init.py -y`
       * `[info] yyyy-mm-dd hh:ii:ss - initialize end.`と表示されてコンテナ生成完了
-    * masterノードのダンプ作成完了
+    * masterノードのダンプ作成完了  
       `sudo python3 rep/dump.py -n master`
-    * masterからslaveにdumpをコピー
+    * masterからslaveにdumpをコピー  
       `sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump`
-    * masterノードからslaveノードにリストア
+    * masterノードからslaveノードにリストア  
       `python3 rep/restore.py -n slave`
       * デタッチするか -> `y`
       * リストア対象 -> dumpフォルダ一覧表示からコピペ
