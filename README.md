@@ -8,6 +8,7 @@
 - ubuntu :20.04lts
 
 ## ⚙ 使用法
+
 - ノード生成
     1. ノード設定スクリプト `config.py`
         応答で必要情報を.envに書き出したりmysql用confやログインパスワードファイルを生成する。  
@@ -69,6 +70,6 @@
       `sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump`
     * masterノードからslaveノードにリストア  
       `python3 rep/restore.py -n slave`
-      * デタッチするか -> `y`
+      * デタッチするか -> **y**
       * リストア対象 -> dumpフォルダ一覧表示からコピペ
-      * アタッチするか -> `y`
+      * アタッチするか -> **y**
