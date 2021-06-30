@@ -56,16 +56,19 @@
             - `--node` or `-n`: 1ホストクラスタ時に使用。ノード強制  
 
 ## 💨 お手軽１ホストクラスタ構築
+
 - ノード作成
-    `python3 config.py all`  
-    すべてenterで完了  
-    `sudo python3 init.py`  
-    すべてyで完了  
-    `sudo python3 rep/dump.py -n master`  
-    すべてyで完了  
-    ```
-    sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump  
-    python3 rep/restore.py -n slave
-    ```  
-    上記でコピーしたdumpを指定  
-    masterにattachするか聞かれたらy
+    * masterとslaveノードの設定
+      `python3 config.py all`
+    * masterノードとslaveノードのコンテナ作成
+      `sudo python3 init.py -y`
+      * `[info] yyyy-mm-dd hh:ii:ss - initialize end.`と表示されてコンテナ生成完了
+    * masterノードのダンプ作成完了
+      `sudo python3 rep/dump.py -n master`
+    * masterからslaveにdumpをコピー
+      `sudo cp -r vol/master/dump/{任意のdump} vol/slave/dump`
+    * masterノードからslaveノードにリストア
+      `python3 rep/restore.py -n slave`
+      * デタッチするか -> `y`
+      * リストア対象 -> dumpフォルダ一覧表示からコピペ
+      * アタッチするか -> `y`
